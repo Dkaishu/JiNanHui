@@ -74,10 +74,7 @@ public class SplashActivity extends Activity{
                         SplashActivity.this, "is_first_enter", true);
 
                 Intent intent;
-                if (
-                        true
-                        //isFirstEnter
-                        ) {
+                if (isFirstEnter) {
                     // 新手引导
                     intent = new Intent(getApplicationContext(),
                             GuideActivity.class);
