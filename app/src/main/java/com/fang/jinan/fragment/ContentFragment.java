@@ -78,7 +78,6 @@ public class ContentFragment extends BaseFragment {
 		});
 
 		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-
 			@Override
 			public void onPageSelected(int position) {
 				BasePager pager = mPagers.get(position);

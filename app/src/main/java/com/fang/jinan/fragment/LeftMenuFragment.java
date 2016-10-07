@@ -52,7 +52,6 @@ public class LeftMenuFragment extends BaseFragment {
 		lvList.setAdapter(mAdapter);
 
 		lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -112,8 +111,7 @@ public class LeftMenuFragment extends BaseFragment {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = View.inflate(mActivity, R.layout.list_item_left_menu,
-					null);
+			View view = View.inflate(mActivity, R.layout.list_item_left_menu, null);
 			TextView tvMenu = (TextView) view.findViewById(R.id.tv_menu);
 
 			NewsMenu.NewsMenuData item = getItem(position);

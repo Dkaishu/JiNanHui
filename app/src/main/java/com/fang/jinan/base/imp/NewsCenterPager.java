@@ -54,7 +54,6 @@ public class NewsCenterPager extends BasePager {
 		String cache = CacheUtils.getCache(GlobalConstants.CATEGORY_URL,
 				mActivity);
 		if (!TextUtils.isEmpty(cache)) {
-			System.out.println("发现缓存啦...");
 			processData(cache);
 		}
 
@@ -69,8 +68,10 @@ public class NewsCenterPager extends BasePager {
 			@Override
 			public void onSuccess(String result) {
 				Toast.makeText(x.app(), result, Toast.LENGTH_LONG).show();
-				// JsonObject, Gson
+				// 解析数据
 				processData(result);
+				//写入缓存
+				CacheUtils.setCache(GlobalConstants.CATEGORY_URL,result,mActivity);
 			}
 
 			@Override
@@ -97,7 +98,7 @@ public class NewsCenterPager extends BasePager {
 		// Gson: Google Json
 		Gson gson = new Gson();
 		mNewsData = gson.fromJson(json, NewsMenu.class);//Todo
-		System.out.println("解析结果:" + mNewsData);
+		//System.out.println("解析结果:" + mNewsData);
 
 		// 获取侧边栏对象
 		MainActivity mainUI = (MainActivity) mActivity;
