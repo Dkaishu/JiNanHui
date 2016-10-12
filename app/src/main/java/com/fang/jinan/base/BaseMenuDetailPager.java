@@ -1,13 +1,11 @@
-package com.fang.jinan.base.imp;
+package com.fang.jinan.base;
 
 import android.app.Activity;
 import android.view.View;
 
 /**
  * 菜单详情页基类
- * 
- * @author Kevin
- * @date 2015-10-18
+ *
  */
 public abstract class BaseMenuDetailPager {
 

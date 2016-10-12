@@ -1,4 +1,4 @@
-package com.fang.jinan.base.imp;
+package com.fang.jinan.base.impl;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -10,12 +10,12 @@ import com.fang.jinan.base.BasePager;
 
 
 /**
- * 首页
+ * 设置
  *
  */
-public class HomePager extends BasePager {
+public class SettingPager extends BasePager {
 
-	public HomePager(Activity activity) {
+	public SettingPager(Activity activity) {
 		super(activity);
 	}
 
@@ -24,7 +24,7 @@ public class HomePager extends BasePager {
 
 		// 要给帧布局填充布局对象
 		TextView view = new TextView(mActivity);
-		view.setText("首页");
+		view.setText("设置");
 		view.setTextColor(Color.RED);
 		view.setTextSize(22);
 		view.setGravity(Gravity.CENTER);
@@ -32,7 +32,7 @@ public class HomePager extends BasePager {
 		flContent.addView(view);
 
 		// 修改页面标题
-		tvTitle.setText("济南汇");
+		tvTitle.setText("设置");
 
 		// 隐藏菜单按钮
 		btnMenu.setVisibility(View.GONE);

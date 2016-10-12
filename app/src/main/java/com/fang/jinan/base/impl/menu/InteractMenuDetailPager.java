@@ -1,4 +1,4 @@
-package com.fang.jinan.base.imp.menu;
+package com.fang.jinan.base.impl.menu;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fang.jinan.base.imp.BaseMenuDetailPager;
+import com.fang.jinan.base.BaseMenuDetailPager;
 
 
 /**

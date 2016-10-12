@@ -12,9 +12,9 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import com.fang.jinan.MainActivity;
 import com.fang.jinan.R;
 import com.fang.jinan.base.BasePager;
-import com.fang.jinan.base.imp.HomePager;
-import com.fang.jinan.base.imp.NewsCenterPager;
-import com.fang.jinan.base.imp.SettingPager;
+import com.fang.jinan.base.impl.HomePager;
+import com.fang.jinan.base.impl.NewsCenterPager;
+import com.fang.jinan.base.impl.SettingPager;
 import com.fang.jinan.view.NoScrollViewPager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 

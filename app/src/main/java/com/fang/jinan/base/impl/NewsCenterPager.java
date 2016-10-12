@@ -1,19 +1,14 @@
-package com.fang.jinan.base.imp;
+package com.fang.jinan.base.impl;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fang.jinan.MainActivity;
+import com.fang.jinan.base.BaseMenuDetailPager;
 import com.fang.jinan.base.BasePager;
-import com.fang.jinan.base.imp.menu.InteractMenuDetailPager;
-import com.fang.jinan.base.imp.menu.NewsMenuDetailPager;
-import com.fang.jinan.base.imp.menu.PhotosMenuDetailPager;
-import com.fang.jinan.base.imp.menu.TopicMenuDetailPager;
+import com.fang.jinan.base.impl.menu.NewsMenuDetailPager;
 import com.fang.jinan.domain.NewsMenu;
 import com.fang.jinan.fragment.LeftMenuFragment;
 import com.fang.jinan.global.GlobalConstants;
@@ -21,8 +16,6 @@ import com.fang.jinan.utils.CacheUtils;
 import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
-import org.xutils.ex.HttpException;
-import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -35,7 +28,7 @@ import java.util.ArrayList;
  */
 public class NewsCenterPager extends BasePager {
 	public NewsMenu mNewsData;
-	private ArrayList<com.fang.jinan.base.imp.BaseMenuDetailPager> mMenuDetailPagers;// 菜单详情页集合
+	private ArrayList<com.fang.jinan.base.BaseMenuDetailPager> mMenuDetailPagers;// 菜单详情页集合
 
 	public NewsCenterPager(Activity activity) {
 		super(activity);
@@ -67,7 +60,7 @@ public class NewsCenterPager extends BasePager {
 		x.http().get(params, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
-				Toast.makeText(x.app(), result, Toast.LENGTH_LONG).show();
+//				Toast.makeText(x.app(), result, Toast.LENGTH_LONG).show();
 				// 解析数据
 				processData(result);
 				//写入缓存
@@ -97,7 +90,7 @@ public class NewsCenterPager extends BasePager {
 	protected void processData(String json) {
 		// Gson: Google Json
 		Gson gson = new Gson();
-		mNewsData = gson.fromJson(json, NewsMenu.class);//Todo
+		mNewsData = gson.fromJson(json, NewsMenu.class);
 		//System.out.println("解析结果:" + mNewsData);
 
 		// 获取侧边栏对象
@@ -108,11 +101,11 @@ public class NewsCenterPager extends BasePager {
 		fragment.setMenuData(mNewsData.data);
 
 		// 初始化4个菜单详情页
-		mMenuDetailPagers = new ArrayList<com.fang.jinan.base.imp.BaseMenuDetailPager>();
-		mMenuDetailPagers.add(new NewsMenuDetailPager(mActivity));
-		mMenuDetailPagers.add(new TopicMenuDetailPager(mActivity));
-		mMenuDetailPagers.add(new PhotosMenuDetailPager(mActivity));
-		mMenuDetailPagers.add(new InteractMenuDetailPager(mActivity));
+		mMenuDetailPagers = new ArrayList<BaseMenuDetailPager>();
+		mMenuDetailPagers.add(new NewsMenuDetailPager(mActivity,mNewsData.data.get(0).children));
+//		mMenuDetailPagers.add(new TopicMenuDetailPager(mActivity));//Todo 写菜单详情页
+//		mMenuDetailPagers.add(new PhotosMenuDetailPager(mActivity));
+//		mMenuDetailPagers.add(new InteractMenuDetailPager(mActivity));
 
 		// 将新闻菜单详情页设置为默认页面
 		setCurrentDetailPager(0);
@@ -121,7 +114,7 @@ public class NewsCenterPager extends BasePager {
 	// 设置菜单详情页
 	public void setCurrentDetailPager(int position) {
 		// 重新给frameLayout添加内容
-		com.fang.jinan.base.imp.BaseMenuDetailPager pager = mMenuDetailPagers.get(position);// 获取当前应该显示的页面
+		com.fang.jinan.base.BaseMenuDetailPager pager = mMenuDetailPagers.get(position);// 获取当前应该显示的页面
 		View view = pager.mRootView;// 当前页面的布局
 
 		// 清除之前旧的布局

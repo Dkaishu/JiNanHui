@@ -22,8 +22,7 @@ public class MainActivity extends SlidingFragmentActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题,
-        // 必须在setContentView之前调用
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         setBehindContentView(R.layout.left_menu);

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.fang.jinan.MainActivity;
 import com.fang.jinan.R;
-import com.fang.jinan.base.imp.NewsCenterPager;
+import com.fang.jinan.base.impl.NewsCenterPager;
 import com.fang.jinan.domain.NewsMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
