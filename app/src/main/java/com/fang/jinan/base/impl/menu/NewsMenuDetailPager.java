@@ -1,10 +1,13 @@
 package com.fang.jinan.base.impl.menu;
 
 import android.app.Activity;
+import android.media.Image;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.fang.jinan.MainActivity;
 import com.fang.jinan.R;
@@ -26,6 +29,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 	private ArrayList<TabDetailPager> mPagers;// 页签页面集合
 	private ViewPager mViewPager;
 	private TabPageIndicator mIndicator;
+	private ImageButton btn_next;
 
 	public NewsMenuDetailPager(Activity activity,ArrayList<NewsMenu.NewsTabData> children) {
 		super(activity);
@@ -38,6 +42,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 		View view = View.inflate(mActivity, R.layout.pager_news_menu_detail, null);
 		mViewPager = (ViewPager) view.findViewById(R.id.vp_news_menu_detail);
 		mIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);
+		btn_next = (ImageButton) view.findViewById(R.id.btn_next);
 
 		return view;
 	}
@@ -57,6 +62,14 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 		// 设置页面滑动监听
 		// mViewPager.setOnPageChangeListener(this);
 		mIndicator.setOnPageChangeListener(this);// 此处必须给指示器设置页面监听,不能设置给viewpager
+		btn_next.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int current = mViewPager.getCurrentItem();
+				current++;
+				mViewPager.setCurrentItem(current);
+			}
+		});
 	}
 
 	//ViewPager.OnPageChangeListener

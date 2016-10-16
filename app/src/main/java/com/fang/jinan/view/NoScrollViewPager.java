@@ -25,4 +25,8 @@ public class NoScrollViewPager extends ViewPager {
 		return true;
 	}
 
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		return false;//不拦截TouchEvent，否则出现侧滑边缘时，微动的情况
+	}
 }
