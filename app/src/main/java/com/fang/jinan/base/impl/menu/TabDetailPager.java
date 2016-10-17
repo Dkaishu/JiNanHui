@@ -1,12 +1,16 @@
 package com.fang.jinan.base.impl.menu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +22,7 @@ import com.fang.jinan.domain.NewsMenu;
 import com.fang.jinan.domain.NewsTabBean;
 import com.fang.jinan.global.GlobalConstants;
 import com.fang.jinan.utils.CacheUtils;
+import com.fang.jinan.utils.PrefUtils;
 import com.fang.jinan.view.PullToRefreshListView;
 import com.fang.jinan.view.TopNewsViewPager;
 import com.google.gson.Gson;
@@ -53,6 +58,8 @@ public class TabDetailPager {
     private ArrayList<NewsTabBean.NewsData> mNewsList;
 
     private NewsAdapter mNewsAdapter;
+
+    private Handler mHandler;
 
 
     /**
@@ -103,6 +110,38 @@ public class TabDetailPager {
         });
 
 
+        lvList.setFocusable(true);
+        lvList.setFocusableInTouchMode(true);
+
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int headerViewsCount = lvList.getHeaderViewsCount();// 获取头布局数量
+                position = position - headerViewsCount;// 需要减去头布局的占位
+                System.out.println("第" + position + "个被点击了");
+
+                NewsTabBean.NewsData news = mNewsList.get(position);
+
+                // read_ids: 1101,1102,1105,1203,
+                String readIds = PrefUtils.getString(mActivity, "read_ids", "");
+
+                if (!readIds.contains(news.id + "")) {// 只有不包含当前id,才追加,
+                    // 避免重复添加同一个id
+                    readIds = readIds + news.id + ",";// 1101,1102,
+                    PrefUtils.setString(mActivity, "read_ids", readIds);
+                }
+
+                // 要将被点击的item的文字颜色改为灰色, 局部刷新, view对象就是当前被点击的对象
+                TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
+                tvTitle.setTextColor(Color.GRAY);
+                mNewsAdapter.notifyDataSetChanged();//全局刷新, 浪费性能
+
+                // 跳到新闻详情页面
+/*                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", news.url);
+                mActivity.startActivity(intent);*/
+            }
+        });
 
         return view;
     }
@@ -118,8 +157,8 @@ public class TabDetailPager {
 
     }
 
-    //解析json数据
-    private void processData(String json,boolean hasMore) {
+    //解析json数据,loadMore:此数据是否是加载更多的数据
+    private void processData(String json,boolean loadMore) {
         Gson gson = new Gson();
         NewsTabBean newsTabBean = gson.fromJson(json,NewsTabBean.class);
 
@@ -130,7 +169,7 @@ public class TabDetailPager {
             mMoreUrl = null;
         }
 
-        if (!hasMore){
+        if (!loadMore){
             //分别给头条新闻mTopNews和新闻列表mNewsList填充数据
             mTopNews = newsTabBean.data.topnews;
             if (mTopNews != null){
@@ -164,7 +203,8 @@ public class TabDetailPager {
                 lvList.setAdapter(mNewsAdapter);
             }
 
-            //Todo 轮播图轮播
+            //轮播图轮播
+            playByTurns();
         }else {
             // 加载更多数据
             ArrayList<NewsTabBean.NewsData> moreNews = newsTabBean.data.news;
@@ -172,9 +212,28 @@ public class TabDetailPager {
             // 刷新listview
             mNewsAdapter.notifyDataSetChanged();
         }
+    }
+    //轮播图控制
+    private void playByTurns() {
+        if (mHandler == null) {
+            mHandler = new Handler() {
+                public void handleMessage(android.os.Message msg) {
+                    int currentItem = mViewPager.getCurrentItem();
+                    currentItem++;
 
+                    if (currentItem > mTopNews.size() - 1) {
+                        currentItem = 0;// 如果已经到了最后一个页面,跳到第一页
+                    }
 
+                    mViewPager.setCurrentItem(currentItem);
 
+                    mHandler.sendEmptyMessageDelayed(0, 3000);// 继续发送延时3秒的消息,形成内循环
+                }
+            };
+
+            // 保证启动自动轮播逻辑只执行一次
+            mHandler.sendEmptyMessageDelayed(0, 3000);// 发送延时3秒的消息
+        }
     }
 
     private void getDataFromServer(){
@@ -185,7 +244,7 @@ public class TabDetailPager {
             public void onSuccess(String result) {
                 processData(result,false);
                 CacheUtils.setCache(mUrl,result,mActivity);
-                Toast.makeText(x.app(), "TabDetailPager:"+result, Toast.LENGTH_LONG).show();
+                Toast.makeText(x.app(), "TabDetailPager:从服务器获取成功", Toast.LENGTH_LONG).show();
                 // 收起下拉刷新控件
                 lvList.onRefreshComplete(true);
             }
@@ -219,8 +278,8 @@ public class TabDetailPager {
             @Override
             public void onSuccess(String result) {
                 processData(result,true);
-                CacheUtils.setCache(mMoreUrl,result,mActivity);
-                Toast.makeText(x.app(), "TabDetailPager(more):"+result, Toast.LENGTH_LONG).show();
+//                CacheUtils.setCache(mMoreUrl,result,mActivity);
+                Toast.makeText(x.app(), "TabDetailPager(more):从服务器获取成功", Toast.LENGTH_LONG).show();
                 // 收起下拉刷新控件
                 lvList.onRefreshComplete(true);
             }
@@ -242,28 +301,6 @@ public class TabDetailPager {
 
             }
         });
- /*       HttpUtils utils = new HttpUtils();
-        utils.send(HttpMethod.GET, mMoreUrl, new RequestCallBack<String>() {
-
-            @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
-                String result = responseInfo.result;
-                processData(result, true);
-
-                // 收起下拉刷新控件
-                lvList.onRefreshComplete(true);
-            }
-
-            @Override
-            public void onFailure(HttpException error, String msg) {
-                // 请求失败
-                error.printStackTrace();
-                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-
-                // 收起下拉刷新控件
-                lvList.onRefreshComplete(false);
-            }
-        });*/
     }
 
     private class NewsAdapter extends BaseAdapter {
@@ -302,6 +339,14 @@ public class TabDetailPager {
             viewHold.tvTitle.setText(newsData.title);
             viewHold.tvDate.setText(newsData.pubdate);
 
+            // 根据本地记录来标记已读未读
+            String readIds = PrefUtils.getString(mActivity, "read_ids", "");
+            if (readIds.contains(newsData.id + "")) {
+                viewHold.tvTitle.setTextColor(Color.GRAY);
+            } else {
+                viewHold.tvTitle.setTextColor(Color.BLACK);
+            }
+
             //利用BitmapUtils加载图片
             x.image().bind(viewHold.ivIcon,
                     newsData.listimage,
@@ -310,7 +355,7 @@ public class TabDetailPager {
             return convertView;
         }
 
-        @Override
+/*        @Override
         public int getItemViewType(int position) {
             return 0;
         }
@@ -333,7 +378,7 @@ public class TabDetailPager {
         @Override
         public boolean isEnabled(int position) {
             return false;
-        }
+        }*/
     }
 
     private static class ViewHold {
