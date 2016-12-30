@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.fang.jinan.view.NoScrollViewPager
         android:id="@+id/vp_content"
@@ -36,7 +36,7 @@
             android:id="@+id/rb_setting"
             style="@style/Bottom_Tab_Style"
             android:drawableTop="@drawable/tab_setting_selector"
-            android:text="设置" />
+            android:text="我的" />
     </RadioGroup>
 
 </LinearLayout>

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/JiNan.iml" filepath="$PROJECT_DIR$/JiNan.iml" />
       <module fileurl="file://$PROJECT_DIR$/JiNanHui.iml" filepath="$PROJECT_DIR$/JiNanHui.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easy_image_loader/easy_image_loader.iml" filepath="$PROJECT_DIR$/easy_image_loader/easy_image_loader.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library_ViewPagerIndicator/library_ViewPagerIndicator.iml" filepath="$PROJECT_DIR$/library_ViewPagerIndicator/library_ViewPagerIndicator.iml" />
     </modules>

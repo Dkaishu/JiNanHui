@@ -28,7 +28,6 @@ public class ContentFragment extends BaseFragment {
 
 	private NoScrollViewPager mViewPager;
 	private RadioGroup rgGroup;
-
 	private ArrayList<BasePager> mPagers;
 
 	@Override

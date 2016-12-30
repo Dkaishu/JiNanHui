@@ -1,8 +1,6 @@
 package com.fang.jinan.base.impl.menu;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +26,6 @@ import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import org.xutils.common.Callback;
-import org.xutils.ex.HttpException;
-import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -110,8 +105,8 @@ public class TabDetailPager {
         });
 
 
-        lvList.setFocusable(true);
-        lvList.setFocusableInTouchMode(true);
+/*        lvList.setFocusable(true);
+        lvList.setFocusableInTouchMode(true);*/
 
         lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

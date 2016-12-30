@@ -18,6 +18,8 @@ public class BasePager {
     public TextView tvTitle;
     public ImageButton btnMenu;
     public FrameLayout flContent;
+    public ImageButton btnPhoto;//组图切换按钮
+
 
     public View mRootView;// 当前页面的布局对象
 
@@ -32,6 +34,7 @@ public class BasePager {
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
         btnMenu = (ImageButton) view.findViewById(R.id.btn_menu);
         flContent = (FrameLayout) view.findViewById(R.id.fl_content);
+        btnPhoto = (ImageButton) view.findViewById(R.id.btn_photo);
         btnMenu.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -51,6 +54,6 @@ public class BasePager {
         slidingMenu.toggle();// 如果当前状态是开, 调用后就关; 反之亦然
     }
 
-    public void initData(){};
+    public void initData(){}
 
 }

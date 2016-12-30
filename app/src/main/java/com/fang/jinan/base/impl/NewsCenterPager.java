@@ -8,7 +8,10 @@ import android.widget.Toast;
 import com.fang.jinan.MainActivity;
 import com.fang.jinan.base.BaseMenuDetailPager;
 import com.fang.jinan.base.BasePager;
+import com.fang.jinan.base.impl.menu.InteractMenuDetailPager;
 import com.fang.jinan.base.impl.menu.NewsMenuDetailPager;
+import com.fang.jinan.base.impl.menu.PhotosMenuDetailPager;
+import com.fang.jinan.base.impl.menu.TopicMenuDetailPager;
 import com.fang.jinan.domain.NewsMenu;
 import com.fang.jinan.fragment.LeftMenuFragment;
 import com.fang.jinan.global.GlobalConstants;
@@ -103,9 +106,9 @@ public class NewsCenterPager extends BasePager {
 		// 初始化4个菜单详情页
 		mMenuDetailPagers = new ArrayList<BaseMenuDetailPager>();
 		mMenuDetailPagers.add(new NewsMenuDetailPager(mActivity,mNewsData.data.get(0).children));
-//		mMenuDetailPagers.add(new TopicMenuDetailPager(mActivity));//Todo 写菜单详情页
-//		mMenuDetailPagers.add(new PhotosMenuDetailPager(mActivity));
-//		mMenuDetailPagers.add(new InteractMenuDetailPager(mActivity));
+		mMenuDetailPagers.add(new TopicMenuDetailPager(mActivity));
+		mMenuDetailPagers.add(new PhotosMenuDetailPager(mActivity,btnPhoto));
+		mMenuDetailPagers.add(new InteractMenuDetailPager(mActivity));
 
 		// 将新闻菜单详情页设置为默认页面
 		setCurrentDetailPager(0);
@@ -127,5 +130,13 @@ public class NewsCenterPager extends BasePager {
 
 		// 更新标题
 		tvTitle.setText(mNewsData.data.get(position).title);
+
+		// 如果是组图页面, 需要显示切换按钮
+		if (pager instanceof PhotosMenuDetailPager) {
+			btnPhoto.setVisibility(View.VISIBLE);
+		} else {
+			// 隐藏切换按钮
+			btnPhoto.setVisibility(View.GONE);
+		}
 	}
 }

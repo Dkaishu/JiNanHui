@@ -42,4 +42,10 @@ public class PrefUtils {
                 Context.MODE_PRIVATE);
         return sp.getInt(key, defValue);
     }
+    public  static void clearAll(Context ctx){
+        SharedPreferences sp = ctx.getSharedPreferences("config",
+                Context.MODE_PRIVATE);
+        sp.edit().clear().commit();
+
+    }
 }
